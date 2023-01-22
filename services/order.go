@@ -1,10 +1,12 @@
 package services
 
 import (
+	"context"
 	"github.com/google/uuid"
 	"github.com/mansoorceksport/ddd-go/aggregate"
 	"github.com/mansoorceksport/ddd-go/domain/customer"
 	"github.com/mansoorceksport/ddd-go/domain/customer/memory"
+	"github.com/mansoorceksport/ddd-go/domain/customer/mongo"
 	"github.com/mansoorceksport/ddd-go/domain/product"
 	prodmem "github.com/mansoorceksport/ddd-go/domain/product/memory"
 	"log"
@@ -41,12 +43,19 @@ func WithCustomerRepository(cr customer.CustomerRepository) OrderConfiguration {
 }
 
 func WithMemoryCustomerRepository() OrderConfiguration {
-	//return func(os *OrderService) error {
-	//	os.customer = memory.New()
-	//	return nil
-	//}
 	cr := memory.New()
 	return WithCustomerRepository(cr)
+}
+
+func WithMongoCustomerRepository(ctx context.Context, connectionString string) OrderConfiguration {
+	return func(os *OrderService) error {
+		m, err := mongo.New(ctx, connectionString)
+		if err != nil {
+			return err
+		}
+		os.customer = m
+		return nil
+	}
 }
 
 func WithMemoryProductRepository(products []aggregate.Product) OrderConfiguration {

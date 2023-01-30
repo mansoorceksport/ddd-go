@@ -1,4 +1,4 @@
-module github.com/mansoorceksport/ddd-go
+module github.com/mansoorceksport/tavern
 
 go 1.17
 

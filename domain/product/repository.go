@@ -3,7 +3,6 @@ package product
 import (
 	"errors"
 	"github.com/google/uuid"
-	"github.com/mansoorceksport/ddd-go/aggregate"
 )
 
 var (
@@ -11,10 +10,10 @@ var (
 	ErrProductAlreadyExists = errors.New("there is already such an product")
 )
 
-type ProductRepository interface {
-	GetAll() ([]aggregate.Product, error)
-	GetById(id uuid.UUID) (aggregate.Product, error)
-	Add(product aggregate.Product) error
-	Update(product aggregate.Product) error
+type Repository interface {
+	GetAll() ([]Product, error)
+	GetById(id uuid.UUID) (Product, error)
+	Add(product Product) error
+	Update(product Product) error
 	Delete(id uuid.UUID) error
 }

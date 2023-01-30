@@ -31,8 +31,8 @@ func WithOrderService(orderService *order.OrderService) TavernConfiguration {
 	}
 }
 
-func (ts *TavernService) Order(customerID uuid.UUID, products []uuid.UUID) error {
-	price, err := ts.OrderService.CreateOrder(customerID, products)
+func (ts *TavernService) Order(idempotentKey string, customerID uuid.UUID, products []uuid.UUID) error {
+	price, err := ts.OrderService.CreateOrder(idempotentKey, customerID, products)
 	if err != nil {
 		return err
 	}

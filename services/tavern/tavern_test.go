@@ -30,7 +30,7 @@ func TestTavernService_Order(t *testing.T) {
 	products := init_products(t)
 	//ctx := context.Background()
 	//orderService, err := order.NewOrderService(order.WithMongoCustomerRepository(ctx, "mongodb://localhost:9000"), order.WithMemoryProductRepository(products))
-	orderService, err := order.NewOrderService(order.WithMemoryCustomerRepository(), order.WithMemoryProductRepository(products))
+	orderService, err := order.NewOrderService(order.WithMemoryIdempotent(), order.WithMemoryCustomerRepository(), order.WithMemoryProductRepository(products))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,7 +44,8 @@ func TestTavernService_Order(t *testing.T) {
 
 	customerId := uid
 	orders := []uuid.UUID{products[0].GetId(), products[1].GetId()}
-	err = tavern.Order(customerId, orders)
+	idempotentKey := uuid.NewString()
+	err = tavern.Order(idempotentKey, customerId, orders)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -42,15 +42,15 @@ func NewOrderService(configurations ...OrderConfiguration) (*OrderService, error
 	}
 
 	// check all the required components is enabled
-	if os.idempotent != nil {
+	if os.idempotent == nil {
 		return nil, ERRIdempotentIsMandatory
 	}
 
-	if os.customer != nil {
+	if os.customer == nil {
 		return nil, ERRCustomerIsMandatory
 	}
 
-	if os.products != nil {
+	if os.products == nil {
 		return nil, ERRProductIsMandatory
 	}
 
